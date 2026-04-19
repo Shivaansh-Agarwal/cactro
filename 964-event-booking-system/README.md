@@ -38,6 +38,36 @@ Build an event booking system where event organizers can create/manage events an
 - MongoDB (via Docker)
 - RabbitMQ (via Docker)
 
+## Data Schema
+
+### Event
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Integer | Unique identifier |
+| `title` | String | Event name |
+| `description` | String | Event details |
+| `date` | String | Event date (YYYY-MM-DD) |
+| `organizerId` | Integer | Owner of the event |
+
+### Booking
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Integer | Unique identifier |
+| `eventId` | Integer | Reference to event |
+| `customerId` | Integer | Customer who booked |
+| `ticketsCount` | Integer | Number of tickets |
+| `createdAt` | DateTime | Booking timestamp |
+
+### Outbox (Message Queue)
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | String | Unique message ID |
+| `exchange` | String | RabbitMQ exchange |
+| `routingKey` | String | Message routing key |
+| `payload` | Object | Message content |
+| `status` | String | pending / published |
+| `createdAt` | DateTime | Message creation time |
+
 ## Quick Start
 
 ```bash
