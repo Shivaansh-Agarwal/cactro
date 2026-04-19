@@ -1,4 +1,60 @@
-# Event Booking System API Backend
+# Event Booking System
+
+A Node.js REST API for event management with MongoDB and RabbitMQ.
+
+## Quick Start
+
+```bash
+# Start everything (MongoDB, RabbitMQ, API + Worker)
+docker-compose up --build
+```
+
+## Access
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| API | http://localhost:3001 | - |
+| RabbitMQ | http://localhost:15672 | admin / password123 |
+
+## API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/events` | None | List events |
+| POST | `/api/events` | Organizer | Create event |
+| PUT | `/api/events/:id` | Organizer (Owner) | Update event |
+| GET | `/api/bookings/:eventId` | None | Get bookings |
+| POST | `/api/bookings` | Customer | Create booking |
+
+## Test Users
+
+- **Organizer**: `Authorization: Bearer organizer_101`
+- **Customer**: `Authorization: Bearer customer_202`
+
+## Examples
+
+```bash
+# Get events
+curl http://localhost:3001/api/events
+
+# Create event (as organizer)
+curl -X POST http://localhost:3001/api/events \
+  -H "Authorization: Bearer organizer_101" \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Tech Conference", "date": "2026-12-31"}'
+
+# Create booking (as customer)
+curl -X POST http://localhost:3001/api/bookings \
+  -H "Authorization: Bearer customer_202" \
+  -H "Content-Type: application/json" \
+  -d '{"eventId": 1, "customerId": 202, "ticketsCount": 2}'
+```
+
+## Stop
+
+```bash
+docker-compose down
+```# Event Booking System API Backend
 
 This project implements the backend APIs using Node.js and Express.js. It features robust Role-Based Access Control (RBAC), MongoDB for data persistence, and RabbitMQ for reliable, scalable background task processing.
 
